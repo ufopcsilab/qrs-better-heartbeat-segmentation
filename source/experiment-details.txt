@@ -1,0 +1,37 @@
+Utilizou-se:
+    registros ímpares para treinamento/validação.
+        - 70% dos picos R para treino e os 30% restantes para validação.
+    registros pares para teste (Pan + CNN).
+    somente os registros 1XX, os quais são sinais não arrítmicos.
+    somente sinais normais (anotação igual a 'N').
+    o sinal entre o último pico R do treino e o primeiro da validação é usado como amostras negativas do treino.
+    janela de tamanho igual a 300
+    filtro: Sim
+
+Mesma rede utilizada do trabalho CIARP, mudando somente o tamanho de entrada.
+Anotações dos 300 sinais iniciais e finais são descartados.
+
+Resultados:
+    salvos na pasta 'results'
+    o nome da execução é 'results/seed'
+        - se houver filtragem é 'results/seedFiltered'
+
+Amostras positivas
+    Amostra com o pico R centralizado
+    Data augmentation:
+        ( 1) Shift -15
+        ( 2) Shift -10
+        ( 3) Shift -5
+        ( 4) Shift +5
+        ( 5) Shift +10
+        ( 6) Shift +15
+        ( 7) Atenuação onda P (375 ms - 135 pontos)
+        ( 8) Atenuação onda T (375 ms - 135 pontos)
+        ( 9) Atenuação de toda onda pela multiplicação por 0.60
+        (10) Atenuação de toda onda pela multiplicação por 0.80
+
+Amostras negativas
+    Começam após 50 unidades após o pico R anterior e posterior (evitar que o pico R apareça na amostra negativa)
+    A janela é deslizada em 5 unidades
+    Se entre os dois picos R (depois de tirado os 50 pontos de cada lado) não houver uma janela de no mínimo 300, essa janela é descartada e passa-se para a próxima.
+    Se houver uma janela entre os dois picos R de tamanho 303, somente uma janela é utilizada, pois não será possível fazer um shift de 5 sem pegar os 50 pontos de distância do pico Rs.
